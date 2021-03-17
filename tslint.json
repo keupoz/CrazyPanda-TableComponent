@@ -1,0 +1,6 @@
+{
+    "extends": "@keupoz/typescript-config/tslint.json",
+    "rules": {
+        "strict-boolean-expressions": false
+    }
+}

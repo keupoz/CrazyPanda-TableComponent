@@ -1,0 +1,7 @@
+{
+    "extends": "@keupoz/typescript-config/tsconfig.json",
+    "compilerOptions": {
+        "jsx": "react",
+        "jsxFactory": "createElement"
+    }
+}
