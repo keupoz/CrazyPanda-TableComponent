@@ -10,7 +10,7 @@ const isProduction = process.env.NODE_ENV === "production";
 const config = {
     input: "src/index.tsx",
     output: {
-        file: "dist/index.js",
+        file: "docs/index.js",
         format: "iife"
     },
     plugins: [
