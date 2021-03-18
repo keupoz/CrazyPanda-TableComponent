@@ -92,20 +92,27 @@ export class Table extends Component<ITableProps, ITableState> {
         );
     }
 
+    /** Get filtered and sorted data */
     private getData() {
         const { reversed, sortBy } = this.state,
             filter = this.state.filter.toLowerCase();
 
+        // Copy data to avoid mutating of original array
         let data = this.props.data.slice();
 
         if (filter.length > 0) {
             data = data.filter((row) => {
+                // Search through all values of the row
                 return row.some((value) => {
+                    // Convert value to string
+                    // Transfrom the string to lowercase
+                    // And search for entered substring
                     return String(value).toLowerCase().includes(filter);
                 });
             });
         }
 
+        // If a column is selected to sort by then sort data
         if (sortBy > -1) {
             const orderDown = reversed ? -1 : 1,
                 orderUp = reversed ? 1 : -1;
@@ -124,10 +131,12 @@ export class Table extends Component<ITableProps, ITableState> {
         return data;
     }
 
+    /** Get number of pages */
     private getPages(data: TableData) {
         return Math.ceil(data.length / 50);
     }
 
+    /** Get sort icon for column index */
     private getSortIcon(index: number) {
         const { reversed, sortBy } = this.state;
 
@@ -154,11 +163,17 @@ export class Table extends Component<ITableProps, ITableState> {
     private updateSort(index: number) {
         const { sortBy, reversed } = this.state;
 
+        // If already selected column is clicked
         if (sortBy === index) {
+            // If order is already reversed reset sorting
             if (reversed) this.setState({ sortBy: -1 });
 
+            // Invert reversing
             this.setState({ reversed: !reversed });
+
+            // Clicked a new column
         } else {
+            // Reset reversing and update sortBy index
             this.setState({
                 reversed: false,
                 sortBy: index
