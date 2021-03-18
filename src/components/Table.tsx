@@ -1,9 +1,11 @@
 import { Component, createElement, FormEvent, MouseEvent } from "react";
 import { Pagination } from "./Pagination";
 
+export type TableData = (number | string)[][];
+
 export interface ITableProps {
     columns: string[];
-    data: string[][];
+    data: TableData;
     keyColumn: number;
     title: string;
 }
@@ -97,26 +99,32 @@ export class Table extends Component<ITableProps, ITableState> {
         let data = this.props.data.slice();
 
         if (filter.length > 0) {
-            data = data.filter((row) => row.some((value) => value.toLowerCase().includes(filter)));
+            data = data.filter((row) => {
+                return row.some((value) => {
+                    return String(value).toLowerCase().includes(filter);
+                });
+            });
         }
 
         if (sortBy > -1) {
+            const orderDown = reversed ? -1 : 1,
+                orderUp = reversed ? 1 : -1;
+
             data.sort((a, b) => {
-                const subA = a[sortBy] || "",
-                    subB = b[sortBy] || "";
+                const subA = a[sortBy],
+                    subB = b[sortBy];
 
-                return subA.localeCompare(subB);
+                if (subA > subB) return orderDown;
+                if (subA < subB) return orderUp;
+
+                return 0;
             });
-
-            if (reversed) {
-                data.reverse();
-            }
         }
 
         return data;
     }
 
-    private getPages(data: string[][]) {
+    private getPages(data: TableData) {
         return Math.ceil(data.length / 50);
     }
 
@@ -124,7 +132,7 @@ export class Table extends Component<ITableProps, ITableState> {
         const { reversed, sortBy } = this.state;
 
         if (sortBy !== index) return "fa-sort";
-        else return reversed ? "fa-sort-up" : "fa-sort-down";
+        else return reversed ? "fa-sort-down" : "fa-sort-up";
     }
 
     private onColumnClick(e: MouseEvent, index: number) {

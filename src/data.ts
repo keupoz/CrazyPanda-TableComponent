@@ -1,6 +1,8 @@
+import { TableData } from "./components/Table";
+
 // Generated here: https://slothman.dev/data-generator/
 
-export const data = [
+export const data: TableData = [
     ["Judson", "Collier", "Clinton.Lebsack2", "1-857-703-5830"],
     ["Cassidy", "Bartoletti", "Reta79", "669.161.0788 x3137"],
     ["Kasey", "Fisher", "Ransom.Koepp", "1-639-775-8138 x536"],
@@ -164,5 +166,5 @@ export const data = [
 ];
 
 data.forEach((row, index) => {
-    row.unshift(String(index + 1));
+    row.unshift(index + 1);
 });
